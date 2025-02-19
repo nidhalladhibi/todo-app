@@ -1,6 +1,6 @@
 import React from "react";
 
-const TaskItem = ({ task, setEditTask, deleteTask, toggleComplete }) => {
+const TaskItem = ({ task, setEditTask, confirmDelete, toggleComplete }) => {
   return (
     <div className={`task-item ${task.completed ? "completed" : ""}`}>
       <div>
@@ -8,8 +8,8 @@ const TaskItem = ({ task, setEditTask, deleteTask, toggleComplete }) => {
         <p>{task.description}</p>
       </div>
       <div>
-        <button onClick={() => setEditTask(task)}>Edit</button>
-        <button onClick={() => deleteTask(task.id)}>Delete</button>
+        <button onClick={() => setEditTask(task)}>Edit</button> {/* Utiliser confirmEdit */}
+        <button onClick={() => confirmDelete(task.id)}>Delete</button>
         <button onClick={() => toggleComplete(task.id)}>
           {task.completed ? "Undo" : "Complete"}
         </button>

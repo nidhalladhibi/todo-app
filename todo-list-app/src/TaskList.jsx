@@ -1,15 +1,15 @@
 import React from "react";
 import TaskItem from "./TaskItem";
 
-const TaskList = ({ tasks, setEditTask, deleteTask, toggleComplete }) => {
+const TaskList = ({ tasks, setEditTask, confirmDelete, toggleComplete }) => {
   return (
     <div className="task-list">
       {tasks.map((task) => (
         <TaskItem
           key={task.id}
           task={task}
-          setEditTask={setEditTask}
-          deleteTask={deleteTask}
+          setEditTask={setEditTask} // Transmettre confirmEdit
+          confirmDelete={confirmDelete}
           toggleComplete={toggleComplete}
         />
       ))}

@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
+import PinModal from "./PinModal"; // Importer la modale
 import "./App.css";
 
 const App = () => {
   const [tasks, setTasks] = useState([]);
   const [editTask, setEditTask] = useState(null);
+  const [showPinModal, setShowPinModal] = useState(false); // État pour afficher la modale
+  const [taskToDelete, setTaskToDelete] = useState(null); // Tâche à supprimer
+  const [taskToEdit, setTaskToEdit] = useState(null); // Tâche à éditer
+  const [isEditMode, setIsEditMode] = useState(false); // Mode édition ou suppression
 
   // Load tasks from localStorage on initial render
   useEffect(() => {
@@ -27,9 +32,30 @@ const App = () => {
     setEditTask(null);
   };
 
-  const deleteTask = (id) => {
-    if (window.confirm("Are you sure you want to delete this task?")) {
-      setTasks(tasks.filter((task) => task.id !== id));
+  const confirmDelete = (id) => {
+    setTaskToDelete(id); // Définir la tâche à supprimer
+    setIsEditMode(false); // Mode suppression
+    setShowPinModal(true); // Afficher la modale pour le code PIN
+  };
+
+  const confirmEdit = (task) => {
+    setTaskToEdit(task); // Définir la tâche à éditer
+    setIsEditMode(true); // Mode édition
+    setShowPinModal(true); // Afficher la modale pour le code PIN
+  };
+
+  const handlePinValidation = (pin) => {
+    if (pin === "1234") { // Remplacez "1234" par votre code PIN
+      if (isEditMode) {
+        setEditTask(taskToEdit); // Passer en mode édition
+      } else {
+        setTasks(tasks.filter((task) => task.id !== taskToDelete)); // Supprimer la tâche
+      }
+      setShowPinModal(false); // Fermer la modale
+      setTaskToDelete(null); // Réinitialiser la tâche à supprimer
+      setTaskToEdit(null); // Réinitialiser la tâche à éditer
+    } else {
+      alert("Code PIN incorrect. L'opération a échoué.");
     }
   };
 
@@ -47,10 +73,16 @@ const App = () => {
       <TaskForm addTask={addTask} editTask={editTask} updateTask={updateTask} />
       <TaskList
         tasks={tasks}
-        setEditTask={setEditTask}
-        deleteTask={deleteTask}
+        setEditTask={confirmEdit} // Utiliser confirmEdit au lieu de setEditTask
+        confirmDelete={confirmDelete}
         toggleComplete={toggleComplete}
       />
+      {showPinModal && (
+        <PinModal
+          onClose={() => setShowPinModal(false)}
+          onConfirm={handlePinValidation}
+        />
+      )}
     </div>
   );
 };
