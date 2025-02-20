@@ -5,21 +5,21 @@ import PinModal from "./PinModal";
 import "./App.css";
 
 const App = () => {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(JSON.parse(localStorage.getItem("tasks")));
   const [editTask, setEditTask] = useState(null);
   const [showPinModal, setShowPinModal] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState(null);
   const [taskToEdit, setTaskToEdit] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [history, setHistory] = useState([]); // État pour l'historique
+  const [history, setHistory] = useState(JSON.parse(localStorage.getItem("history"))); // État pour l'historique
 
   // Load tasks and history from localStorage on initial render
-  useEffect(() => {
-    const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    const storedHistory = JSON.parse(localStorage.getItem("history")) || [];
-    setTasks(storedTasks);
-    setHistory(storedHistory);
-  }, []);
+  // useEffect(() => {
+  //   const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  //   const storedHistory = JSON.parse(localStorage.getItem("history")) || [];
+  //   setTasks(storedTasks);
+  //   setHistory(storedHistory);
+  // }, []);
 
   // Save tasks and history to localStorage whenever they change
   useEffect(() => {
